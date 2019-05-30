@@ -188,8 +188,7 @@ let editMultiTodo = (req, res) => {
             let option = {
                 title: req.body.title
             }
-            Multitodo.findOneAndUpdate(
-                 {
+            Multitodo.findOneAndUpdate({
                     multiTodoId: req.body.multiTodoId
                 },
                 option,
@@ -311,8 +310,8 @@ let getMultiTodoTrn = (req, res) => {
     let getTodoTransaction = () => {
         return new Promise((resolve, reject) => {
             MultitodoTransaction.find({
-                'multiTodoId':req.params.multiTodoId
-            }).populate({
+                    'multiTodoId': req.params.multiTodoId
+                }).populate({
                     path: 'editorData',
                     select: 'userId FirstName LastName'
                 })
@@ -341,12 +340,118 @@ let getMultiTodoTrn = (req, res) => {
         });
 }
 
+//function to undo/revert change and show last transaction
+let undoHistory = (req, res) => {
+    let validateInput = () => {
+        return new Promise((resolve, reject) => {
+            if (!check.isEmpty(req.body.multiTodoId)) {
+                if (!check.isEmpty(req.body.transactionId)) {
+                    resolve(req)
+                } else {
+                    logger.error('transaction id is missing or null', 'multiToDoController: editMultitodo() =>validateInput', 10);
+                    let apiResponse = response.generate(true, 'transaction id is missing or null in the request', 404, null);
+                    reject(apiResponse);
+                }
+            } else {
+                logger.error('mutlitodo id is required', 'multiToDoController: editMultitodo()=>validateInput', 10);
+                let apiResponse = response.generate(true, 'multi todo  id is missing in the request', 404, null);
+                reject(apiResponse);
+            }
+        });
+    } //end validate input
+
+    //function to find current transaction multitodo
+    let findTransaction = () => {
+        return new Promise((resolve, reject) => {
+            MultitodoTransaction.findOne({
+                    multiTodoId: req.body.multiTodoId,
+                    transactionId: transactionId
+                },
+                (err, foundTransaction) => {
+                    if (err) {
+                        logger.error(`error finding multitodo transaction ${err}`, `multiTodo.js=>undoHistory-findTransaction`, 10)
+                        let apiResponse = response.generate(true, `Error getting multi-todo transaction`, 500, null)
+                        resolve(apiResponse)
+                    } else {
+                        resolve(foundTransaction)
+                    }
+                }
+            )
+        })
+    } //end findTransaction
+
+    //function to check title change and revert back to previous title.
+    let multiTodoUndo = (foundTransaction) => {
+        return new Promise((resolve, reject) => {
+            //if title is changed then update multitodo 
+            if (foundTransaction.changed == 'title') {
+                let lastTitle = {
+                    title: foundTransaction.title
+                }
+                Multitodo.findOneAndUpdate({
+                        multiTodoId: foundTransaction.multiTodoId
+                    },
+                    lastTitle,
+                    (err, updatedMultiTodo) => {
+                        if (err) {
+                            logger.error(`Error updating multitodo title ${err}`, `multiTodo.js-undoHistory-multiTodoUndo`, 10)
+                            let apiResponse = response.generate(true, `Error updating multi current todo title to previous title`, 500, 10)
+                            resolve(apiResponse)
+                        } else {
+                            resolve(updatedMultiTodo)
+                        }
+                    }
+                )
+            }
+        })
+    } //end multiTodoUndo
+
+    //function to delete last transaction
+let deleteLastTransaction=()=>{
+    return new Promise((resolve,reject)=>{
+        MultitodoTransaction.remove(
+            {
+                multiTodoId:req.body.multiTodoId,
+                transactionId:req.body.transactionId
+            },
+            (err,result)=>{
+                if(err){
+                    logger.error(`Error deleting multitodo transaction ${err}`, `multiTodo.js-undoHistory-deleteTransction`, 10)
+                    let apiResponse = response.generate(true, `Error deleting multitodo transaction`, 500, 10)
+                    resolve(apiResponse)
+                }
+                else{
+                    resolve(result)
+                }
+            }
+        )
+    })
+} //end deleteLastTransaction
+
+validateInput(req,res)
+.then(findTransaction)
+.then(multiTodoUndo)
+.then(deleteLastTransaction)
+.then((resolve)=>{
+    logger.info(`Undo task success`,`multiTodo.js=>undoHistory()`,10)
+    let apiResponse=response.generate(false,`Undo/Revert Successfully done`,200,resolve)
+    res.status(200)
+    res.send(apiResponse)
+    
+})
+.catch((err)=>{
+    res.status(err.status)
+    res.send(err)
+})
+
+}
+
 //exports
 module.exports = {
     addToDoItem: addTodoItem,
     getMultiTodo: getMultiTodo,
     getMultiToDoTransaction: getMultiTodoTransaction,
-    getMultiTodoTrn:getMultiTodoTrn,
+    getMultiTodoTrn: getMultiTodoTrn,
     editMultiTodo: editMultiTodo,
 
 }
