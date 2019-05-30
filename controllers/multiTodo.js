@@ -426,6 +426,7 @@ let undoHistory = (req, res) => {
             )
         })
     } //end deleteLastTransaction
+
     let getTodoTransaction = () => {
         return new Promise((resolve, reject) => {
             MultitodoTransaction.find({
@@ -445,6 +446,7 @@ let undoHistory = (req, res) => {
                 })
         })
     }
+
     validateInput(req, res)
         .then(findTransaction)
         .then(multiTodoUndo)
@@ -467,7 +469,7 @@ let undoHistory = (req, res) => {
 let deleteMultiTodo = (req, res) => {
     let validateInput = () => {
         return new Promise((resolve, reject) => {
-            if (!check.isEmpty(req.params.multiTodoId)) {
+            if (!check.isEmpty(req.body.multiTodoId)) {
                 resolve(req)
             } else {
                 logger.error('mutlitodo id is required', 'multiToDo.js: deleteMultitodo()=>validateInput', 10);
@@ -478,8 +480,8 @@ let deleteMultiTodo = (req, res) => {
     } //end validate input
     let deleteTodo = () => {
         return new Promise((resolve, reject) => {
-            Multitodo.findOneAndDelete({
-                    multiTodoId: req.body.multiTodo
+            Multitodo.remove({
+                    'multiTodoId': req.body.multiTodoId
                 },
                 (err, todoDelete) => {
                     if (err) {
@@ -496,12 +498,12 @@ let deleteMultiTodo = (req, res) => {
 
     validateInput(req, res)
         .then(deleteTodo)
+        .then(getMultiTodo)
         .then((resolve) => {
-            let apiResponse = response.generate(false, 'Multi Todo Deleted Successfully', 500, resolve);
-            resolve(apiResponse);
+            let apiResponse = response.generate(false, 'Multi Todo Deleted Successfully', 200, resolve);
+            res.send(apiResponse);
         })
         .catch((err) => {
-            res.status(err.status)
             res.send(err)
         })
 
