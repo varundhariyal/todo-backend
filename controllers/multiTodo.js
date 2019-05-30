@@ -344,7 +344,7 @@ let getMultiTodoTrn = (req, res) => {
 let undoHistory = (req, res) => {
     let validateInput = () => {
         return new Promise((resolve, reject) => {
-            if (!check.isEmpty(req.body.multiTodoId)) {
+            if (!check.isEmpty(req.params.multiTodoId)) {
                 if (!check.isEmpty(req.body.transactionId)) {
                     resolve(req)
                 } else {
@@ -364,14 +364,14 @@ let undoHistory = (req, res) => {
     let findTransaction = () => {
         return new Promise((resolve, reject) => {
             MultitodoTransaction.findOne({
-                    multiTodoId: req.body.multiTodoId,
+                    'multiTodoId': req.params.multiTodoId,
                     transactionId: transactionId
                 },
                 (err, foundTransaction) => {
                     if (err) {
                         logger.error(`error finding multitodo transaction ${err}`, `multiTodo.js=>undoHistory-findTransaction`, 10)
                         let apiResponse = response.generate(true, `Error getting multi-todo transaction`, 500, null)
-                        resolve(apiResponse)
+                        reject(apiResponse)
                     } else {
                         resolve(foundTransaction)
                     }
@@ -396,7 +396,7 @@ let undoHistory = (req, res) => {
                         if (err) {
                             logger.error(`Error updating multitodo title ${err}`, `multiTodo.js-undoHistory-multiTodoUndo`, 10)
                             let apiResponse = response.generate(true, `Error updating multi current todo title to previous title`, 500, 10)
-                            resolve(apiResponse)
+                            reject(apiResponse)
                         } else {
                             resolve(updatedMultiTodo)
                         }
@@ -409,15 +409,15 @@ let undoHistory = (req, res) => {
     //function to delete last transaction
     let deleteLastTransaction = () => {
         return new Promise((resolve, reject) => {
-            MultitodoTransaction.remove({
-                    multiTodoId: req.body.multiTodoId,
+            MultitodoTransaction.findOneAndDelete({
+                    'multiTodoId': req.params.multiTodoId,
                     transactionId: req.body.transactionId
                 },
                 (err, result) => {
                     if (err) {
                         logger.error(`Error deleting multitodo transaction ${err}`, `multiTodo.js-undoHistory-deleteTransction`, 10)
                         let apiResponse = response.generate(true, `Error deleting multitodo transaction`, 500, 10)
-                        resolve(apiResponse)
+                        reject(apiResponse)
                     } else {
                         resolve(result)
                     }
