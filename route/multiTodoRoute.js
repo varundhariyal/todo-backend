@@ -14,4 +14,5 @@ module.exports.setRouter = (app) => {
     app.post(`${baseUrl}/addMultiTodo`, multiTodoController.addToDoItem)
     app.post(`${baseUrl}/editMultiTodo`, multiTodoController.editMultiTodo)
     app.post(`${baseUrl}/undoHistory/:multiTodoId`, multiTodoController.undoHistory)
+    app.post(`${baseUrl}/deleteMultitodo/:multiTodoId`, multiTodoController.deleteMultiTodo)
 }
