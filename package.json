@@ -1,0 +1,29 @@
+{
+  "name": "live-to-do-usermanagement",
+  "version": "1.0.0",
+  "description": "RESTful API for user-management for Live-To-Do",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Varun Dhariyal",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^3.0.5",
+    "body-parser": "^1.18.3",
+    "cookie-parser": "^1.4.4",
+    "express": "^4.16.4",
+    "express-jwt": "^5.3.1",
+    "jsonwebtoken": "^8.5.1",
+    "moment": "^2.24.0",
+    "moment-timezone": "^0.5.23",
+    "mongodb": "^3.2.3",
+    "mongoose": "^5.4.22",
+    "morgan": "^1.9.1",
+    "nodemailer": "^6.1.0",
+    "pino": "^5.12.2",
+    "request": "^2.88.0",
+    "shortid": "^2.2.14",
+    "socket.io": "^2.2.0"
+  }
+}
