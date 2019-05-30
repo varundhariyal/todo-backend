@@ -9,8 +9,9 @@ module.exports.setRouter = (app) => {
 
     app.get(`${baseUrl}/getAllMultiTodo`, multiTodoController.getMultiTodo)
     app.get(`${baseUrl}/getPreviousTransaction`, multiTodoController.getMultiToDoTransaction)
-    app.get(`${baseUrl}/getMultiTodoTrn/:multiTodoId`,multiTodoController.getMultiTodoTrn)
+    app.get(`${baseUrl}/getMultiTodoTrn/:multiTodoId`, multiTodoController.getMultiTodoTrn)
 
     app.post(`${baseUrl}/addMultiTodo`, multiTodoController.addToDoItem)
     app.post(`${baseUrl}/editMultiTodo`, multiTodoController.editMultiTodo)
+    app.post(`${baseUrl}/undoHistory/:multiTodoId`, multiTodoController.undoHistory)
 }

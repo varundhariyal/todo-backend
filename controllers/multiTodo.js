@@ -407,42 +407,40 @@ let undoHistory = (req, res) => {
     } //end multiTodoUndo
 
     //function to delete last transaction
-let deleteLastTransaction=()=>{
-    return new Promise((resolve,reject)=>{
-        MultitodoTransaction.remove(
-            {
-                multiTodoId:req.body.multiTodoId,
-                transactionId:req.body.transactionId
-            },
-            (err,result)=>{
-                if(err){
-                    logger.error(`Error deleting multitodo transaction ${err}`, `multiTodo.js-undoHistory-deleteTransction`, 10)
-                    let apiResponse = response.generate(true, `Error deleting multitodo transaction`, 500, 10)
-                    resolve(apiResponse)
+    let deleteLastTransaction = () => {
+        return new Promise((resolve, reject) => {
+            MultitodoTransaction.remove({
+                    multiTodoId: req.body.multiTodoId,
+                    transactionId: req.body.transactionId
+                },
+                (err, result) => {
+                    if (err) {
+                        logger.error(`Error deleting multitodo transaction ${err}`, `multiTodo.js-undoHistory-deleteTransction`, 10)
+                        let apiResponse = response.generate(true, `Error deleting multitodo transaction`, 500, 10)
+                        resolve(apiResponse)
+                    } else {
+                        resolve(result)
+                    }
                 }
-                else{
-                    resolve(result)
-                }
-            }
-        )
-    })
-} //end deleteLastTransaction
+            )
+        })
+    } //end deleteLastTransaction
 
-validateInput(req,res)
-.then(findTransaction)
-.then(multiTodoUndo)
-.then(deleteLastTransaction)
-.then((resolve)=>{
-    logger.info(`Undo task success`,`multiTodo.js=>undoHistory()`,10)
-    let apiResponse=response.generate(false,`Undo/Revert Successfully done`,200,resolve)
-    res.status(200)
-    res.send(apiResponse)
-    
-})
-.catch((err)=>{
-    res.status(err.status)
-    res.send(err)
-})
+    validateInput(req, res)
+        .then(findTransaction)
+        .then(multiTodoUndo)
+        .then(deleteLastTransaction)
+        .then((resolve) => {
+            logger.info(`Undo task success`, `multiTodo.js=>undoHistory()`, 10)
+            let apiResponse = response.generate(false, `Undo/Revert Successfully done`, 200, resolve)
+            res.status(200)
+            res.send(apiResponse)
+
+        })
+        .catch((err) => {
+            res.status(err.status)
+            res.send(err)
+        })
 
 }
 
@@ -453,5 +451,5 @@ module.exports = {
     getMultiToDoTransaction: getMultiTodoTransaction,
     getMultiTodoTrn: getMultiTodoTrn,
     editMultiTodo: editMultiTodo,
-
+    undoHistory: undoHistory
 }
