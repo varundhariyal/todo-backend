@@ -115,11 +115,11 @@ let getMultiTodo = (req, res) => {
 
     let validateInput = () => {
         return new Promise((resolve, reject) => {
-            if (!check.isEmpty(Multitodo)) {
+            if (!check.isEmpty(req.query.userId)) {
                 resolve(req)
             } else {
-                logger.error('No multitodo found', 'multiToDo: getMultiTodo()', 10);
-                let apiResponse = response.generate(true, 'Multi Todo Not Found', 404, null);
+                logger.error('User id is missing in the req', 'multiToDo: getMultiTodo()', 10);
+                let apiResponse = response.generate(true, 'user id is missing in the req', 404, null);
                 reject(apiResponse);
 
             }
@@ -134,9 +134,9 @@ let getMultiTodo = (req, res) => {
         return new Promise((resolve, reject) => {
             FriendModel.find({
                     $or: [{
-                        senderId: req.body.userId
+                        senderId: req.query.userId
                     }, {
-                        receiverid: req.body.userid
+                        receiverId: req.query.userId
                     }],
                     status: 'accepted'
                 })
@@ -151,24 +151,32 @@ let getMultiTodo = (req, res) => {
                         logger.error(`Error occured fetching friends data`, `multiTodo.js-findAllFriend`, 10)
                         let apiResponse = response.generate(true, `Error occured while fetching friends data`, 500, null)
                         reject(apiResponse)
-                    } else {
+                    } 
+                    // else if(check.isEmpty(foundFriends)){
+                    //     logger.error(`No friend multi todo`, `multiTodo.js-findAllFriend`, 10)
+                    //     let apiResponse = response.generate(true, `Error occured while fetching friends multi todo data`, 404, null)
+                    //     reject(apiResponse)
+                    // }
+                    else {
+                        let userId=req.query.userId;
+                        friendsIdArray.push(userId);
                         for (let friend of foundFriends) {
                             console.log(foundFriends)
                             console.log(friend.senderId)
                             console.log(friend.receiverId)
                             //ternary operator
-                            let conditionVar = req.body.userId === friend.senderId ? friend.receiverId : friend.senderId
+                            let conditionVar = req.query.userId === friend.senderId ? friend.receiverId : friend.senderId
                             friendsIdArray.push(conditionVar) //push userId in array
                             console.log(friendsIdArray)
-                            resolve(foundFriends)
                         }
+                        resolve(friendsIdArray)
                     }
                 })
         })
     } //end findAllFriend
 
 
-    let getAllItems = () => {
+    let getAllItems = (friendsIdArray) => {
         return new Promise((resolve, reject) => {
             Multitodo.find({
                     'createdBy': {
@@ -176,7 +184,8 @@ let getMultiTodo = (req, res) => {
                     }
                 })
                 .lean()
-                .limit(10)
+                .skip(parseInt(req.query.skip) || 0)
+                .limit(5)
                 .populate({
                     path: 'creatorData',
                     select: 'userId FirstName LastName'

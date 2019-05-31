@@ -307,7 +307,7 @@ let logout = (req, res) => {
                 let apiResponse = response.generate(true, "User already logged out/invalid userID", 404, null)
                 res.send(apiResponse)
             } else {
-                let apiResponse = response.generate(false, "Logout success", 200, result)
+                let apiResponse = response.generate(false, "Logout success", 200, null)
                 res.send(apiResponse)
             }
         }) //end callback
@@ -486,7 +486,7 @@ let acceptFriendRequest = (req, res) => {
 
 //function to delete a friend request
 let deleteFriendRequest = (req, res) => {
-    FriendModel.remove({
+    FriendModel.findByIdAndRemove({
             'senderId': req.params.senderId
         },
         (err, result) => {

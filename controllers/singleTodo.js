@@ -11,6 +11,9 @@ const ListModel = require('../model/List')
 //function to find all lists in db
 let findAllList = (req, res) => {
     ListModel.find()
+        .lean()
+        .skip(parseInt(req.query.skip) || 0)
+        .limit(5)
         .exec((err, allList) => {
             if (err) {
                 logger.error("Error finding previous list", "list.js:findAllList", 10)
@@ -95,6 +98,9 @@ let findListWithListId = (req, res) => {
     ListModel.findOne({
             'listId': req.params.listId
         })
+        .lean()
+        .skip(parseInt(req.query.skip) || 0)
+        .limit(5)
         .exec((err, singleList) => {
             if (err) {
                 logger.error(`${err}`, 'list.js:findlistwithlistid', 8)
@@ -128,8 +134,8 @@ let createNewList = (req, res) => {
                 })
                 newList.save((err, newList) => {
                     if (err) {
-                        logger.error(err+"Error Creating new todo list", "list.js:newList", 10)
-                        let apiResponse = response.generate(true, "Error Creating new todo list"+err, 500, null)
+                        logger.error(err + "Error Creating new todo list", "list.js:newList", 10)
+                        let apiResponse = response.generate(true, "Error Creating new todo list" + err, 500, null)
                         reject(apiResponse)
                     } else {
                         logger.info("New todo created success", "list.js:newList", 10)
@@ -427,7 +433,7 @@ let deleteSubItem = (req, res) => {
     } else {
         ListModel.updateOne({
             'listId': req.params.listId,
-            'children.itemId':req.params.itemId,
+            'children.itemId': req.params.itemId,
             'children.children.subItemId': req.params.subItemId
         }, {
             $pull: { //'arrayname':{arrayfield}
@@ -478,7 +484,7 @@ let isCompleted = (req, res) => {
 module.exports = {
     allList: findAllList,
     fetchedList: findUserList,
-    deleteUserList:deleteUserList,
+    deleteUserList: deleteUserList,
     findListWithListId: findListWithListId,
     createNewList: createNewList,
     addItem: addItem,
