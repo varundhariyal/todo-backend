@@ -8,6 +8,7 @@ const shortId = require('shortid')
 //models
 const Multitodo = require('../model/Multitodo')
 const MultitodoTransaction = require('../model/MultitodoTransaction')
+const FriendModel=require('../model/Friend')
 
 //function to add a todo item which also contains saving todo item in transactions as history
 let addTodoItem = (req, res) => {
@@ -480,7 +481,7 @@ let deleteMultiTodo = (req, res) => {
     } //end validate input
     let deleteTodo = () => {
         return new Promise((resolve, reject) => {
-            Multitodo.remove({
+            Multitodo.findOneAndDelete({
                     'multiTodoId': req.body.multiTodoId
                 },
                 (err, todoDelete) => {
@@ -501,9 +502,11 @@ let deleteMultiTodo = (req, res) => {
         .then(getMultiTodo)
         .then((resolve) => {
             let apiResponse = response.generate(false, 'Multi Todo Deleted Successfully', 200, resolve);
+            res.status(200)
             res.send(apiResponse);
         })
         .catch((err) => {
+            res.status(err.status)
             res.send(err)
         })
 

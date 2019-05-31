@@ -4,9 +4,9 @@ appConfig.port = 3306;
 appConfig.allowedCorsOrigin = "*";
 appConfig.env = "dev";
 appConfig.db = {
-    uri: 'mongodb://127.0.0.1:27017/userManageDB1'
+    uri: 'mongodb://127.0.0.1:27017/todoDB'
   }
-appConfig.apiVersion = '/api/v1';
+appConfig.apiVersion = '/v1';
 
 
 module.exports = {
