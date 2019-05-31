@@ -377,7 +377,7 @@ let sendFriendRequest = (req, res) => {
                 senderId: req.body.senderId,
                 receiverId: req.body.receiverId,
                 sentOn: time.now(),
-                status: "Pending"
+                status: "pending"
             })
             FriendRequestObj.save((err, result) => {
                 if (err) {

@@ -125,6 +125,29 @@ let getMultiTodo = (req, res) => {
         })
     } //end validate input
 
+    //fucntion to get all friends from friend document using senderId/reciverId with status 'accepted'
+    let findAllFriend=()=>{
+        let friendsArray=[] //push sender/recevierid in it
+        FriendModel.find({$or:[{senderId:req.body.senderId},{receiverid:req.body.receiverid}],status:'accepted'})
+        .populate({
+            path: 'senderData',
+            select: 'userId FirstName LastName'
+        })   
+        .lean()
+        .exec((err,foundFriends)=>{
+if(err){
+    console.log(err)
+    logger.error(`Error occured fetching friends data`,`multiTodo.js-findAllFriend`,10)
+    let apiResponse=response.generate(true,`Error occured while fetching friends data`,500,null)
+    reject(apiResponse)
+}
+else{
+    console.log(result)
+    resolve(foundFriends)
+}
+        })
+    }
+
     let getAllItems = () => {
         return new Promise((resolve, reject) => {
             Multitodo.find()
