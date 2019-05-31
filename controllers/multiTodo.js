@@ -152,66 +152,28 @@ let getMultiTodo = (req, res) => {
                         let apiResponse = response.generate(true, `Error occured while fetching friends data`, 500, null)
                         reject(apiResponse)
                     } else {
-                        for (let friend of foundFriends){
-                        console.log(foundFriends)
-                        console.log(friend.senderId)
-                        console.log(friend.receiverId)
-                        let conditionVar = req.body.userId === friend.senderId ? friend.receiverId : friend.senderId
-                        friendsIdArray.push(conditionVar)
-                        console.log(friendsIdArray)
-                        resolve(foundFriends)
-                    }
+                        for (let friend of foundFriends) {
+                            console.log(foundFriends)
+                            console.log(friend.senderId)
+                            console.log(friend.receiverId)
+                            //ternary operator
+                            let conditionVar = req.body.userId === friend.senderId ? friend.receiverId : friend.senderId
+                            friendsIdArray.push(conditionVar) //push userId in array
+                            console.log(friendsIdArray)
+                            resolve(foundFriends)
+                        }
                     }
                 })
         })
     } //end findAllFriend
 
 
-    //function to push ids.. to friendsArray
-    // let pushIdToArray = (foundFriends) => {
-
-    // }
-
-    //function to find friends with particular ids passed in array
-
-    let findFriendDocument = () => {
-        console.log(friendsIdArray)
-        return new Promise((resolve, reject) => {
-            FriendModel.find({
-                    $in: [friendsIdArray]
-                })
-                .lean()
-                .populate({
-                    path: 'senderData',
-                    select: 'userId FirstName LastName'
-                })
-                .exec((err, FriendDocument) => {
-                    if (err) {
-                        console.log(err)
-                        logger.error(`Error occured fetching friends data with passed user ids`, `multiTodo.js-findFriendDocument`, 10)
-                        let apiResponse = response.generate(true, `Error occured while fetching friends data with passed userid Array`, 500, null)
-                        reject(apiResponse)
-                    } else if (check.isEmpty(FriendDocument)) {
-                        logger.error(`Error occured fetching friends data with passed user ids`, `multiTodo.js-findFriendDocument`, 10)
-                        let apiResponse = response.generate(true, `Error occured while fetching friends data with passed userid Array`, 404, null)
-                        reject(apiResponse)
-                    } else {
-                        console.log(FriendDocument)
-                        resolve(FriendDocument)
-                    }
-                })
-        })
-    }
-
-    let getAllItems = (FriendDocument) => {
-
+    let getAllItems = () => {
         return new Promise((resolve, reject) => {
             Multitodo.find({
-                    $or: [{
-                        createdBy: FriendDocument.senderId
-                    }, {
-                        createdBy: FriendDocument.receiverid
-                    }]
+                    'createdBy': {
+                        $in: friendsIdArray
+                    }
                 })
                 .lean()
                 .limit(10)
@@ -230,10 +192,9 @@ let getMultiTodo = (req, res) => {
                 })
         })
     }
+
     validateInput(req, res)
         .then(findAllFriend)
-        // .then(pushIdToArray)
-        .then(findFriendDocument)
         .then(getAllItems)
         .then((resolve) => {
             let apiResponse = response.generate(false, 'Multi Todo fetched successfully', 200, resolve)
