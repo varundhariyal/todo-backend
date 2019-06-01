@@ -12,8 +12,6 @@ const ListModel = require('../model/List')
 let findAllList = (req, res) => {
     ListModel.find()
         .lean()
-        .skip(parseInt(req.query.skip) || 0)
-        .limit(5)
         .exec((err, allList) => {
             if (err) {
                 logger.error("Error finding previous list", "list.js:findAllList", 10)
@@ -36,6 +34,8 @@ let findUserList = (req, res) => {
     ListModel.find({
             'createdBy': req.params.userId
         })
+        .skip(parseInt(req.query.skip) || 0)
+        .limit(5)
         .exec((err, fetchedList) => {
             if (err) {
                 logger.error("Error finding previous list", "list.js:findUserList", 10)
@@ -99,8 +99,6 @@ let findListWithListId = (req, res) => {
             'listId': req.params.listId
         })
         .lean()
-        .skip(parseInt(req.query.skip) || 0)
-        .limit(5)
         .exec((err, singleList) => {
             if (err) {
                 logger.error(`${err}`, 'list.js:findlistwithlistid', 8)
