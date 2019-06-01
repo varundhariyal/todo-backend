@@ -23,10 +23,18 @@ const friendRequest = new schema({
         virtuals: true
     }
 });
+
 //for fetching userid from signup model,using virtuals of mongoose
 friendRequest.virtual('senderData', {
     ref: 'Signup',
     localField: 'senderId',
+    foreignField: 'userId',
+    justOne: true
+});
+//for fetching userid from signup model,using virtuals of mongoose
+friendRequest.virtual('receiverData', {
+    ref: 'Signup',
+    localField: 'receiverId',
     foreignField: 'userId',
     justOne: true
 });

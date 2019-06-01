@@ -31,6 +31,10 @@ let findAllList = (req, res) => {
 
 //function to find lists of a particular user with userId
 let findUserList = (req, res) => {
+
+    
+
+
     ListModel.find({
             'createdBy': req.params.userId
         })
@@ -46,9 +50,15 @@ let findUserList = (req, res) => {
                 let apiResponse = response.generate(true, "Error fetching previous list", 404, null)
                 res.send(apiResponse)
             } else {
-                logger.info("Previous list found", "list.js:findUserList", 10)
-                let apiResponse = response.generate(false, "Previous list found", 200, fetchedList)
-                res.send(apiResponse)
+                ListModel.count({ 'createdBy': req.params.userId }, (err, result) => {
+                    const newObj = {
+                        fetchedList: fetchedList,
+                        totalItems: result
+                    };
+                    logger.info("Previous list found", "list.js:findUserList", 10)
+                    let apiResponse = response.generate(false, "Previous list found", 200, newObj)
+                    res.send(apiResponse)
+                })
             }
         })
 }

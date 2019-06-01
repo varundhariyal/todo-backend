@@ -295,7 +295,7 @@ let userLogin = (req, res) => {
 //logout function
 let logout = (req, res) => {
     AuthModel.findOneAndRemove({
-            userId: req.user.userId
+            userId: req.body.userId
         },
         ((err, result) => {
             if (err) {
@@ -433,9 +433,13 @@ let getFriendRequest = (req, res) => {
 let getFriendRequestWithReceiverId = (req, res) => {
     console.log(req.params)
     FriendModel.find({
-            'receiverId': req.params.receiverId
+        $or: [{
+            senderId: req.query.userId
+        }, {
+            receiverId: req.query.userId
+        }]
         }).populate({ //provide value
-            path: 'senderData',
+            path: 'senderData receiverData',
             select: 'userId FirstName LastName'
         })
         .exec((err, result) => {

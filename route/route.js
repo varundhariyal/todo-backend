@@ -12,7 +12,7 @@ module.exports.setRouter = (app) => {
 
     app.post(`${baseUrl}/login`, userController.login);
 
-    app.post(`${baseUrl}/logout`, auth.isAuthorized, userController.logout);
+    app.post(`${baseUrl}/logout`, userController.logout);
 
     app.get(`${baseUrl}/all`, userController.getAllUser);
     app.get(`${baseUrl}/getallusers`, userController.getAllUser)
@@ -55,7 +55,7 @@ module.exports.setRouter = (app) => {
     //friend request sending
     app.post(`${baseUrl}/sendrequest`, userController.sendFriendRequest)
     //friend request display
-    app.get(`${baseUrl}/friendrequest/:receiverId`, userController.getFriendRequestWithReceiverId)
+    app.get(`${baseUrl}/friendrequest`, userController.getFriendRequestWithReceiverId)
     app.post(`${baseUrl}/acceptrequest/:receiverId/:senderId`, userController.acceptFriendRequest)
     app.post(`${baseUrl}/deleterequest/:senderId`, userController.deleteFriendRequest)
 
