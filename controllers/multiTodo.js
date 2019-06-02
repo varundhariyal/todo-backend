@@ -184,6 +184,7 @@ let getMultiTodo = (req, res) => {
                     }
                 })
                 .lean()
+                .select('-__v -_id')
                 .skip(parseInt(req.query.skip) || 0)
                 .limit(5)
                 .populate({
@@ -328,6 +329,8 @@ let getMultiTodoTransaction = (req, res) => {
                     path: 'editorData',
                     select: 'userId FirstName LastName'
                 })
+                .lean()
+                .select('-__v -_id')
                 .exec((err, result) => {
                     if (err) {
                         logger.error(err.message, 'multiToDoController: getToDoTransaction()', 10);
@@ -374,6 +377,8 @@ let getMultiTodoTrn = (req, res) => {
                     path: 'editorData',
                     select: 'userId FirstName LastName'
                 })
+                .lean()
+                .select('-__v -_id')
                 .exec((err, result) => {
                     if (err) {
                         logger.error(err.message, 'multiToDoController: getToDoTransaction()', 10);
@@ -494,6 +499,8 @@ let undoHistory = (req, res) => {
                     path: 'editorData',
                     select: 'userId FirstName LastName'
                 })
+                .lean()
+                .select('-__v -_id')
                 .exec((err, result) => {
                     if (err) {
                         logger.error(err.message, 'multiToDoController: getToDoTransaction()', 10);

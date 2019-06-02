@@ -189,7 +189,7 @@ module.exports.setRouter = (app) => {
     /**
      * @apiGroup TODO Single-User
      * @apiVersion  1.0.0
-     * @api {post} /v1/singletodo/deleteList/:listId/:itemId/:subItemId api for deleting a sub todo item of todo item in a todo list.
+     * @api {post} /v1/singletodo/deletesubitem/:listId/:itemId/:subItemId api for deleting a sub todo item of todo item in a todo list.
      *
      * @apiParam {string} listId unique id of the todo list. (route param) (required)
      * @apiParam {string} itemId unique id of the todo item. (route param) (required)
