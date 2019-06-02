@@ -1,0 +1,7 @@
+{
+    "name": "TODO Application Backend",
+    "version": "1.0.0",
+    "description": "API Documentation for the TODO app",
+    "title": "TODO APIs",
+    "url" : "http://api.livetodo.xyz" 
+  }

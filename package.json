@@ -1,7 +1,7 @@
 {
   "name": "live-to-do-usermanagement",
   "version": "1.0.0",
-  "description": "RESTful API for user-management for Live-To-Do",
+  "description": "RESTful API for TODO Backend for app Live-To-Do",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
