@@ -12,6 +12,7 @@ const ListModel = require('../model/List')
 let findAllList = (req, res) => {
     ListModel.find()
         .lean()
+        .select('-__v  -_id')
         .exec((err, allList) => {
             if (err) {
                 logger.error("Error finding previous list", "list.js:findAllList", 10)
@@ -31,13 +32,10 @@ let findAllList = (req, res) => {
 
 //function to find lists of a particular user with userId
 let findUserList = (req, res) => {
-
-    
-
-
     ListModel.find({
             'createdBy': req.params.userId
         })
+        .select('-__v  -_id')
         .skip(parseInt(req.query.skip) || 0)
         .limit(5)
         .exec((err, fetchedList) => {
@@ -108,6 +106,7 @@ let findListWithListId = (req, res) => {
     ListModel.findOne({
             'listId': req.params.listId
         })
+        .select('-__v -_id')
         .lean()
         .exec((err, singleList) => {
             if (err) {
