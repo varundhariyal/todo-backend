@@ -18,7 +18,7 @@ module.exports.setRouter = (app) => {
      * @apiSuccess {object} myResponse shows error status, message, http status code, result.
      * 
      * @apiSuccessExample {object} Success-Response (Sample):
-        {
+{
    "error":false,
    "message":"New To-Do list created success",
    "status":200,
@@ -45,7 +45,7 @@ module.exports.setRouter = (app) => {
      * @apiSuccess {object} myResponse shows error status, message, http status code, result.
      * 
      * @apiSuccessExample {object} Success-Response (Sample):
-    {
+{
    "error":false,
    "message":"ToDo item added to list successfully",
    "status":200,
@@ -81,7 +81,7 @@ module.exports.setRouter = (app) => {
      * @apiSuccess {object} myResponse shows error status, message, http status code, result.
      * 
      * @apiSuccessExample {object} Success-Response (Sample):
-     {
+{
     "error": false,
     "message": "ToDo sub/child item added to list successfully",
     "status": 200,
@@ -125,7 +125,7 @@ module.exports.setRouter = (app) => {
      * @apiSuccess {object} myResponse shows error status, message, http status code, result.
      * 
      * @apiSuccessExample {object} Success-Response (Sample):
-     {
+{
     "error": false,
     "message": "Item Updated Successfully in List",
     "status": 200,
@@ -147,7 +147,7 @@ module.exports.setRouter = (app) => {
      * @apiSuccess {object} myResponse shows error status, message, http status code, result.
      * 
      * @apiSuccessExample {object} Success-Response (Sample):
-     {
+{
     "error": false,
     "message": "todo list deleted succesfully",
     "status": 200,
@@ -174,7 +174,7 @@ module.exports.setRouter = (app) => {
      * @apiSuccess {object} myResponse shows error status, message, http status code, result.
      * 
      * @apiSuccessExample {object} Success-Response (Sample):
-     {
+{
     "error": false,
     "message": "Item Deleted Successfully from the list",
     "status": 200,
@@ -197,7 +197,7 @@ module.exports.setRouter = (app) => {
      * @apiSuccess {object} myResponse shows error status, message, http status code, result.
      * 
      * @apiSuccessExample {object} Success-Response (Sample):
-     {
+{
     "error": false,
     "message": "Sub Item Deleted Successfully from the list",
     "status": 200,
@@ -223,7 +223,7 @@ module.exports.setRouter = (app) => {
     "message": "Previous list found",
     "status": 200,
     "data": [
-        {
+{
             "listId": "qJYuInRmt",
             "listTitle": "TEST SECOND",
             "children": [],
@@ -291,7 +291,7 @@ module.exports.setRouter = (app) => {
      * @apiSuccess {object} myResponse shows error status, message, http status code, result.
      * 
      * @apiSuccessExample {object} Success-Response (Sample):
-     {
+{
     "error": false,
     "message": "Previous list found",
     "status": 200,
@@ -336,7 +336,7 @@ module.exports.setRouter = (app) => {
      * @apiSuccess {object} myResponse shows error status, message, http status code, result.
      * 
      * @apiSuccessExample {object} Success-Response (Sample):
-     {
+{
     "error": false,
     "message": "List found with given listId",
     "status": 200,

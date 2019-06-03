@@ -19,7 +19,7 @@ module.exports.setRouter = (app) => {
      * @apiSuccess {object} myResponse shows error status, message, http status code, result.
      * 
      * @apiSuccessExample {object} Success-Response (Sample):
-     {
+{
     "error": false,
     "message": "Multi Todo fetched successfully",
     "status": 200,
@@ -80,7 +80,7 @@ module.exports.setRouter = (app) => {
     "message": "Multi Todo Transaction fetched successfully",
     "status": 200,
     "data": [
-        {
+{
             "isCompleted": false,
             "changed": "title",
             "remarks": "test1 2 created a todo new 2",
@@ -152,7 +152,7 @@ module.exports.setRouter = (app) => {
      * @apiSuccess {object} myResponse shows error status, message, http status code, result.
      * 
      * @apiSuccessExample {object} Success-Response (Sample):
-     {
+{
     "error": false,
     "message": "Multi Todo Transaction fetched successfully",
     "status": 200,
@@ -253,7 +253,7 @@ module.exports.setRouter = (app) => {
      * @apiSuccess {object} myResponse shows error status, message, http status code, result.
      * 
      * @apiSuccessExample {object} Success-Response (Sample):
-     {
+{
     "error": false,
     "message": "ToDoItem Created Successfully",
     "status": 200,
@@ -287,7 +287,7 @@ module.exports.setRouter = (app) => {
      * @apiSuccess {object} myResponse shows error status, message, http status code, result.
      * 
      * @apiSuccessExample {object} Success-Response (Sample):
-     {
+{
     "error": false,
     "message": "Data Updated successfully",
     "status": 200,
@@ -320,7 +320,7 @@ module.exports.setRouter = (app) => {
      * @apiSuccess {object} myResponse shows error status, message, http status code, result.
      * 
      * @apiSuccessExample {object} Success-Response (Sample):
-     {
+{
     "error": false,
     "message": "Undo/Revert Successfully done",
     "status": 200,
@@ -402,7 +402,7 @@ module.exports.setRouter = (app) => {
      * @apiSuccess {object} myResponse shows error status, message, http status code, result.
      * 
      * @apiSuccessExample {object} Success-Response (Sample):
-     {
+{
     "error": false,
     "message": "Multi Todo Deleted Successfully",
     "status": 200
