@@ -62,13 +62,20 @@ let setServer = (server) => {
                 message: `You have received friend request from ${senderInfo.userName}`
             }
             //emit receiverId event across all(pipes) passing notifcation
-            //on frontend userId mathcing receiverId will receive data
+            //on frontend userId matching receiverId will receive data
             myIo.emit(senderInfo.receiverId, notification)
         }) //end socket listening with event(friend-info)
 
-    })
-    // end of listening set-user event
-}
+        socket.on('accept-request', (receiverInfo) => {
+            console.log(receiverInfo)
+            let notification = {
+                senderId: receiverInfo.senderId,
+                message: `${receiverInfo.userName} has accepted your request`
+            }
+            myIo.emit(receiverInfo.senderId, notification)
+        }) //end socket listening
+    }) //end main socket 'connection
+} //end setServer
 
 
 module.exports = {
