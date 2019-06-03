@@ -50,6 +50,22 @@ let setServer = (server) => {
                 })
             }
         })
+
+        //event listening
+        //friend-info event emitted from frontend
+        socket.on('friend-info', (senderInfo) => {
+            console.log(senderInfo);
+
+            let notification = {
+                senderId: senderInfo.senderId,
+                receiverId: senderInfo.receiverId,
+                message: `You have received friend request from ${senderInfo.userName}`
+            }
+            //emit receiverId event across all(pipes) passing notifcation
+            //on frontend userId mathcing receiverId will receive data
+            myIo.emit(senderInfo.receiverId, notification)
+        }) //end socket listening with event(friend-info)
+
     })
     // end of listening set-user event
 }

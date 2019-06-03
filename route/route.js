@@ -100,7 +100,7 @@ module.exports.setRouter = (app) => {
     */
 
 
-    app.post(`${baseUrl}/logout`, auth.isAuthorized, userController.logout);
+    app.post(`${baseUrl}/logout`, userController.logout);
 
     /**
      * @apiGroup users
@@ -211,7 +211,7 @@ module.exports.setRouter = (app) => {
      * @apiVersion  1.0.0
      * @api {get} /v1/users/friendrequest/:receiverId api for getting friend request.
      *
-     * @apiParam {string} receiverId user id of the user. (route param) (required)
+     * @apiParam {string} userId user id of the user. (query param) (required)
      *
      * @apiSuccess {object} myResponse shows error status, message, http status code, result.
      * 
@@ -240,7 +240,7 @@ module.exports.setRouter = (app) => {
         }
     */
     //friend request display
-    app.get(`${baseUrl}/friendrequest/:receiverId`, userController.getFriendRequestWithReceiverId)
+    app.get(`${baseUrl}/friendrequest`, userController.getFriendRequestWithReceiverId)
 
 
     app.post(`${baseUrl}/acceptrequest/:receiverId/:senderId`, userController.acceptFriendRequest)

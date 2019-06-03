@@ -490,7 +490,7 @@ let acceptFriendRequest = (req, res) => {
 
 //function to delete a friend request
 let deleteFriendRequest = (req, res) => {
-    FriendModel.findByIdAndRemove({
+    FriendModel.findOneAndRemove({
             'senderId': req.params.senderId
         },
         (err, result) => {
