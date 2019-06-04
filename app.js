@@ -23,6 +23,8 @@ app.use(globalErrorMiddleware.globalErrorHandler);
 
 app.use(express.static(path.join(__dirname, 'client')));
 
+logger.info(path.join(__dirname, 'apidoc'))
+app.use(express.static(path.join(__dirname, './apidoc')));
 
 
 
