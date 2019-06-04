@@ -11,6 +11,8 @@ const response = require('../libs/response');
 const SignupModel = require('../model/Signup');
 const FriendModel = require('../model/Friend')
 const AuthModel = require('../model/Auth')
+const FriendListModel = require('../model/FriendList');
+
 
 let getAllUser = (req, res) => {
     SignupModel.find()
@@ -482,6 +484,18 @@ let acceptFriendRequest = (req, res) => {
             } else {
                 logger.info(result, 'Friend Request Aceepted', 10);
                 let apiResponse = response.generate(false, `Friend request accepted succesfully`, 200, result)
+
+                let frinedListObj = new FriendListModel({
+                    'senderId':req.params.senderId,
+                    'receiverId': req.params.receiverId
+                });
+                frinedListObj.save((er, re)=>{
+                    frinedListObj = new FriendListModel({
+                        'senderId':req.params.receiverId,
+                        'receiverId': req.params.senderId
+                    })
+                    frinedListObj.save();
+                })
                 res.send(apiResponse)
             }
         })

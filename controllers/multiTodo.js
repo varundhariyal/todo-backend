@@ -151,14 +151,14 @@ let getMultiTodo = (req, res) => {
                         logger.error(`Error occured fetching friends data`, `multiTodo.js-findAllFriend`, 10)
                         let apiResponse = response.generate(true, `Error occured while fetching friends data`, 500, null)
                         reject(apiResponse)
-                    } 
+                    }
                     // else if(check.isEmpty(foundFriends)){
                     //     logger.error(`No friend multi todo`, `multiTodo.js-findAllFriend`, 10)
                     //     let apiResponse = response.generate(true, `Error occured while fetching friends multi todo data`, 404, null)
                     //     reject(apiResponse)
                     // }
                     else {
-                        let userId=req.query.userId;
+                        let userId = req.query.userId;
                         friendsIdArray.push(userId);
                         for (let friend of foundFriends) {
                             console.log(foundFriends)
@@ -177,6 +177,8 @@ let getMultiTodo = (req, res) => {
 
 
     let getAllItems = (friendsIdArray) => {
+        console.log('\n\n\n\n\n\nfriendsIdArray')
+        console.log(friendsIdArray)
         return new Promise((resolve, reject) => {
             Multitodo.find({
                     'createdBy': {
@@ -197,7 +199,20 @@ let getMultiTodo = (req, res) => {
                         let apiResponse = response.generate(true, 'error while getting data- ' + err.message, 500, null);
                         reject(apiResponse);
                     } else {
-                        resolve(multiTodo)
+                        Multitodo.count({
+                            'createdBy': {
+                                $in: friendsIdArray
+                            }
+                        }, (err, result) => {
+                            const newObj = {
+                                multiTodoData: multiTodo,
+                                totalItems: result
+                            }
+                            console.log('\n\n\n\nnewObj')
+                            console.log(newObj)
+                            logger.info("multi todo found", "list.js:findUserList", 10)
+                            resolve(newObj)
+                        })
                     }
                 })
         })

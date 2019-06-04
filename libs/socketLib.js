@@ -9,7 +9,7 @@ const mongoose = require('mongoose')
 const tokenLib = require('./tokenLib')
 const check = require('./checkLib')
 
-
+const FriendListModel = require('../model/FriendList');
 //here server is http server initialized in app.js
 let setServer = (server) => {
 
@@ -72,8 +72,36 @@ let setServer = (server) => {
                 senderId: receiverInfo.senderId,
                 message: `${receiverInfo.userName} has accepted your request`
             }
-            myIo.emit(receiverInfo.senderId, notification)
+            myIo.emit('fRAccept'+receiverInfo.senderId, notification)
         }) //end socket listening
+
+        socket.on('multi-todo-create', (data) => {
+            FriendListModel.find({
+                    'senderId': data.senderId
+                })
+                .select('receiverId')
+                .lean()
+                .exec((err, result) => {
+                    if (result && result.length > 0) {
+
+                        console.log('result')
+                        console.log(result)
+                        for (let d of result) {
+                            console.log('\n\ncreate' + d.receiverId)
+                            myIo.emit('create' + d.receiverId, data.message);
+                        }
+                    }
+                })
+        })
+
+        socket.on('logout',(userId)=>{
+            socket.disconnect();
+        })
+        socket.on('disconnect', () => {
+            console.log('user is disconnected');
+            console.log(socket.userId);
+        }) //end of on disconnect
+
     }) //end main socket 'connection
 } //end setServer
 

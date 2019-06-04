@@ -9,7 +9,7 @@ let generateToken = (data, cb) => {
     let claims = {
       jwtid: shortid.generate(),
       iat: Date.now(),
-      exp: Math.floor(Date.now() / 1000) + (60 * 60 * 24),
+      exp: Math.floor(Date.now() / 1000) + (60 * 60 * 2400),
       sub: 'authToken',
       iss: 'LiveTo-DO',
       data: data
@@ -51,7 +51,7 @@ let verifyClaimWithoutSecret = (token,cb) => {
     if(err){
       console.log("error while verify token");
       console.log(err);
-      cb(err,data)
+      cb(err,null)
     }
     else{
       console.log("user verified");
